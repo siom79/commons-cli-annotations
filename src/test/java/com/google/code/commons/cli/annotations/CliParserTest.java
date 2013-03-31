@@ -1,14 +1,12 @@
 package com.google.code.commons.cli.annotations;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import org.apache.commons.cli.GnuParser;
 import org.junit.Test;
 
-import com.google.code.commons.cli.annotations.CliOption;
-import com.google.code.commons.cli.annotations.CliParser;
-import com.google.code.commons.cli.annotations.ParserException;
 import com.google.code.commons.cli.annotations.ParserException.Reason;
 
 public class CliParserTest {
@@ -70,4 +68,30 @@ public class CliParserTest {
 		assertThat(exceptionThrown, is(true));
 	}
 
+	public static class OptionalArg {
+		@CliOption(opt = "o", hasOptionalArg = true)
+		private String optionalArg;
+
+		public String getOptionalArg() {
+			return optionalArg;
+		}
+
+		public void setOptionalArg(String optionalArg) {
+			this.optionalArg = optionalArg;
+		}
+	}
+
+	@Test
+	public void testOptionalArgWithoutArg() throws ParserException {
+		CliParser cliParser = new CliParser(new GnuParser());
+		OptionalArg parse = cliParser.parse(OptionalArg.class, new String[] { "-o" });
+		assertThat(parse.optionalArg, is(nullValue()));
+	}
+
+	@Test
+	public void testOptionalArgWithArgProvided() throws ParserException {
+		CliParser cliParser = new CliParser(new GnuParser());
+		OptionalArg parse = cliParser.parse(OptionalArg.class, new String[] { "-o", "value" });
+		assertThat(parse.optionalArg, is("value"));
+	}
 }

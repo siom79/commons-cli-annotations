@@ -44,6 +44,11 @@ public class AnnotationParser {
 		if (hasArg) {
 			option.setArgs(1);
 		}
+		boolean hasOptionalArg = annotation.hasOptionalArg();
+		if (hasOptionalArg) {
+			option.setOptionalArg(hasOptionalArg);
+			option.setArgs(1);
+		}
 		return option;
 	}
 }

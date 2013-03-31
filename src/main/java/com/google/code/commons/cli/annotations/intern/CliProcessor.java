@@ -29,7 +29,7 @@ public class CliProcessor {
 				Option option = annotatedOption.getOption();
 				String opt = option.getOpt();
 				if (line.hasOption(opt)) {
-					if (option.hasArg()) {
+					if (option.hasArg() || option.hasOptionalArg()) {
 						String optionValue = line.getOptionValue(opt);
 						try {
 							PropertyUtils.setSimpleProperty(instanceOfT, annotatedOption.getFieldName(), optionValue);

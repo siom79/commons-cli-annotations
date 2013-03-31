@@ -5,6 +5,8 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import org.apache.commons.cli.Option;
+
 import com.google.code.commons.cli.annotations.ParserException;
 import com.google.code.commons.cli.annotations.ParserException.Reason;
 
@@ -17,7 +19,8 @@ public class AnnotationVerifier {
 
 	void verifyNoArgsOptionsAreBoolean(List<AnnotatedOption> options, Class<?> clazz) throws ParserException {
 		for (AnnotatedOption annotatedOption : options) {
-			if (annotatedOption.getOption().getArgs() <= 0) {
+			Option option = annotatedOption.getOption();
+			if (option.getArgs() <= 0 && !option.hasOptionalArg()) {
 				String fieldName = annotatedOption.getFieldName();
 				try {
 					PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, clazz);

@@ -18,4 +18,6 @@ public @interface CliOption {
 	boolean required() default false;
 
 	boolean hasArg() default false;
+
+	boolean hasOptionalArg() default false;
 }
