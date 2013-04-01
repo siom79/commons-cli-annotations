@@ -30,18 +30,22 @@ public class AnnotationVerifierTest {
 	}
 
 	@Test
-	public void allPropertiesWriteable() throws ParserException {
+	public void allPropertiesWriteable() throws ParserException, IllegalArgumentException, NoSuchFieldException,
+			SecurityException {
 		AnnotationVerifier annotationVerifier = new AnnotationVerifier();
 		List<AnnotatedOption> options = new LinkedList<AnnotatedOption>();
-		options.add(new AnnotatedOption(new Option("opt", "desc"), "propertyWriteable"));
+		options.add(new AnnotatedOption(new Option("opt", "desc"), TestWriteableProperties.class
+				.getDeclaredField("propertyWriteable")));
 		annotationVerifier.verifyAllAnnotatedPropertiesWriteable(options, TestWriteableProperties.class);
 	}
 
 	@Test(expected = ParserException.class)
-	public void allPropertyNotWriteable() throws ParserException {
+	public void allPropertyNotWriteable() throws ParserException, IllegalArgumentException, NoSuchFieldException,
+			SecurityException {
 		AnnotationVerifier annotationVerifier = new AnnotationVerifier();
 		List<AnnotatedOption> options = new LinkedList<AnnotatedOption>();
-		options.add(new AnnotatedOption(new Option("opt", "desc"), "propertyNotReadOrWriteable"));
+		options.add(new AnnotatedOption(new Option("opt", "desc"), TestWriteableProperties.class
+				.getDeclaredField("propertyNotReadOrWriteable")));
 		annotationVerifier.verifyAllAnnotatedPropertiesWriteable(options, TestWriteableProperties.class);
 	}
 
@@ -67,18 +71,22 @@ public class AnnotationVerifierTest {
 	}
 
 	@Test
-	public void annotatedPropertiesWithNoArgsAreBoolean() throws ParserException {
+	public void annotatedPropertiesWithNoArgsAreBoolean() throws ParserException, IllegalArgumentException,
+			NoSuchFieldException, SecurityException {
 		AnnotationVerifier annotationVerifier = new AnnotationVerifier();
 		List<AnnotatedOption> options = new LinkedList<AnnotatedOption>();
-		options.add(new AnnotatedOption(new Option("opt", "desc"), "booleanProperty"));
+		options.add(new AnnotatedOption(new Option("opt", "desc"), TestBooleanProperties.class
+				.getDeclaredField("booleanProperty")));
 		annotationVerifier.verifyOptionTypeIsSupported(options, TestBooleanProperties.class);
 	}
 
 	@Test(expected = ParserException.class)
-	public void annotatedPropertiesWithNoArgsAreBooleanButIsNot() throws ParserException {
+	public void annotatedPropertiesWithNoArgsAreBooleanButIsNot() throws ParserException, IllegalArgumentException,
+			NoSuchFieldException, SecurityException {
 		AnnotationVerifier annotationVerifier = new AnnotationVerifier();
 		List<AnnotatedOption> options = new LinkedList<AnnotatedOption>();
-		options.add(new AnnotatedOption(new Option("opt", "desc"), "notBoolean"));
+		options.add(new AnnotatedOption(new Option("opt", "desc"), TestBooleanProperties.class
+				.getDeclaredField("notBoolean")));
 		annotationVerifier.verifyOptionTypeIsSupported(options, TestBooleanProperties.class);
 	}
 
@@ -94,10 +102,12 @@ public class AnnotationVerifierTest {
 		}
 	}
 
-	public void annotatedPropertyIsNotSupported() {
+	public void annotatedPropertyIsNotSupported() throws IllegalArgumentException, NoSuchFieldException,
+			SecurityException {
 		AnnotationVerifier annotationVerifier = new AnnotationVerifier();
 		List<AnnotatedOption> options = new LinkedList<AnnotatedOption>();
-		options.add(new AnnotatedOption(new Option("opt", "desc"), "dateIsNotSupported"));
+		options.add(new AnnotatedOption(new Option("opt", "desc"), AnnotatedTypeNotSupported.class
+				.getDeclaredField("dateIsNotSupported")));
 		boolean exeptionThrown = false;
 		try {
 			annotationVerifier.verifyOptionTypeIsSupported(options, AnnotatedTypeNotSupported.class);

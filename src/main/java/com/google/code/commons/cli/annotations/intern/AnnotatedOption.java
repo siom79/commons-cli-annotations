@@ -1,22 +1,24 @@
 package com.google.code.commons.cli.annotations.intern;
 
+import java.lang.reflect.Field;
+
 import org.apache.commons.cli.Option;
 
 public class AnnotatedOption {
 	private final Option option;
-	private final String fieldName;
+	private final Field field;
 
-	public AnnotatedOption(Option option, String fieldName) {
+	public AnnotatedOption(Option option, Field field) {
 		super();
 		this.option = option;
-		this.fieldName = fieldName;
+		this.field = field;
 	}
 
 	public Option getOption() {
 		return option;
 	}
 
-	public String getFieldName() {
-		return fieldName;
+	public Field getField() {
+		return field;
 	}
 }

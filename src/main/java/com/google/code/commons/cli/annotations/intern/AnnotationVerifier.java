@@ -29,7 +29,7 @@ public class AnnotationVerifier {
 	}
 
 	private void verifyOptionTypeIsSupported(Class<?> clazz, AnnotatedOption annotatedOption) throws ParserException {
-		String fieldName = annotatedOption.getFieldName();
+		String fieldName = annotatedOption.getField().getName();
 		try {
 			PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, clazz);
 			Class<?> propertyType = propertyDescriptor.getPropertyType();
@@ -44,7 +44,7 @@ public class AnnotationVerifier {
 	}
 
 	private void verifyOptionTypeIsBoolean(Class<?> clazz, AnnotatedOption annotatedOption) throws ParserException {
-		String fieldName = annotatedOption.getFieldName();
+		String fieldName = annotatedOption.getField().getName();
 		try {
 			PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, clazz);
 			Class<?> propertyType = propertyDescriptor.getPropertyType();
@@ -59,7 +59,7 @@ public class AnnotationVerifier {
 
 	void verifyAllAnnotatedPropertiesWriteable(List<AnnotatedOption> options, Class<?> clazz) throws ParserException {
 		for (AnnotatedOption annotatedOption : options) {
-			String fieldName = annotatedOption.getFieldName();
+			String fieldName = annotatedOption.getField().getName();
 			try {
 				PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, clazz);
 				Method writeMethod = propertyDescriptor.getWriteMethod();

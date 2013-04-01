@@ -17,16 +17,15 @@ public class AnnotationParser {
 			CliOption annotation = field.getAnnotation(CliOption.class);
 			if (annotation != null) {
 				Option option = createOption(annotation);
-				String fieldName = field.getName();
-				AnnotatedOption annotatedOption = createAnnotatedOption(option, fieldName);
+				AnnotatedOption annotatedOption = createAnnotatedOption(option, field);
 				options.add(annotatedOption);
 			}
 		}
 		return options;
 	}
 
-	private AnnotatedOption createAnnotatedOption(Option option, String fieldName) {
-		AnnotatedOption annotatedOption = new AnnotatedOption(option, fieldName);
+	private AnnotatedOption createAnnotatedOption(Option option, Field field) {
+		AnnotatedOption annotatedOption = new AnnotatedOption(option, field);
 		return annotatedOption;
 	}
 

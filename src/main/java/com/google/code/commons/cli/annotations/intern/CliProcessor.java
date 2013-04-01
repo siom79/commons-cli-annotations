@@ -32,21 +32,21 @@ public class CliProcessor {
 					if (option.hasArg() || option.hasOptionalArg()) {
 						String optionValue = line.getOptionValue(opt);
 						try {
-							PropertyUtils.setSimpleProperty(instanceOfT, annotatedOption.getFieldName(), optionValue);
+							PropertyUtils.setSimpleProperty(instanceOfT, annotatedOption.getField().getName(),
+									optionValue);
 						} catch (Exception e) {
 							throw new ParserException(Reason.SettingValueFailed, String.format(
 									"Setting value %s to property %s of class %s failed: %s.", optionValue,
-									annotatedOption.getFieldName(), instanceOfT.getClass().getName(), e.getMessage()),
-									e);
+									annotatedOption.getField().getName(), instanceOfT.getClass().getName(),
+									e.getMessage()), e);
 						}
 					} else {
 						try {
-							PropertyUtils.setSimpleProperty(instanceOfT, annotatedOption.getFieldName(), true);
+							PropertyUtils.setSimpleProperty(instanceOfT, annotatedOption.getField().getName(), true);
 						} catch (Exception e) {
 							throw new ParserException(Reason.SettingValueFailed, String.format(
-									"Setting value %s to property %s of class %s failed: %s.", true,
-									annotatedOption.getFieldName(), instanceOfT.getClass().getName(), e.getMessage()),
-									e);
+									"Setting value %s to property %s of class %s failed: %s.", true, annotatedOption
+											.getField().getName(), instanceOfT.getClass().getName(), e.getMessage()), e);
 						}
 					}
 				}
