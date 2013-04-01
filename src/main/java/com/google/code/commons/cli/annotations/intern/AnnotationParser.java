@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.commons.cli.Option;
 
 import com.google.code.commons.cli.annotations.CliOption;
-import com.google.common.base.Strings;
 
 public class AnnotationParser {
 
