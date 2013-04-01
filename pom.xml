@@ -4,7 +4,7 @@
 
 	<groupId>commons-cli-annotations</groupId>
 	<artifactId>commons-cli-annotations</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.3</version>
 	<packaging>jar</packaging>
 
 	<name>commons-cli-annotations</name>
