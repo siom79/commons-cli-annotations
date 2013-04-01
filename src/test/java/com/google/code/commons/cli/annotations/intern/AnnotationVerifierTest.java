@@ -1,5 +1,6 @@
 package com.google.code.commons.cli.annotations.intern;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,8 +8,6 @@ import org.apache.commons.cli.Option;
 import org.junit.Test;
 
 import com.google.code.commons.cli.annotations.ParserException;
-import com.google.code.commons.cli.annotations.intern.AnnotatedOption;
-import com.google.code.commons.cli.annotations.intern.AnnotationVerifier;
 
 public class AnnotationVerifierTest {
 
@@ -68,7 +67,7 @@ public class AnnotationVerifierTest {
 		AnnotationVerifier annotationVerifier = new AnnotationVerifier();
 		List<AnnotatedOption> options = new LinkedList<AnnotatedOption>();
 		options.add(new AnnotatedOption(new Option("opt", "desc"), "booleanProperty"));
-		annotationVerifier.verifyNoArgsOptionsAreBoolean(options, TestBooleanProperties.class);
+		annotationVerifier.verifyOptionTypeIsSupported(options, TestBooleanProperties.class);
 	}
 
 	@Test(expected = ParserException.class)
@@ -76,6 +75,26 @@ public class AnnotationVerifierTest {
 		AnnotationVerifier annotationVerifier = new AnnotationVerifier();
 		List<AnnotatedOption> options = new LinkedList<AnnotatedOption>();
 		options.add(new AnnotatedOption(new Option("opt", "desc"), "notBoolean"));
-		annotationVerifier.verifyNoArgsOptionsAreBoolean(options, TestBooleanProperties.class);
+		annotationVerifier.verifyOptionTypeIsSupported(options, TestBooleanProperties.class);
+	}
+
+	class AnnotatedTypeNotSupported {
+		private Date dateIsNotSupported;
+
+		public Date getDateIsNotSupported() {
+			return dateIsNotSupported;
+		}
+
+		public void setDateIsNotSupported(Date dateIsNotSupported) {
+			this.dateIsNotSupported = dateIsNotSupported;
+		}
+	}
+
+	@Test(expected = ParserException.class)
+	public void annotatedPropertyIsNotSupported() throws ParserException {
+		AnnotationVerifier annotationVerifier = new AnnotationVerifier();
+		List<AnnotatedOption> options = new LinkedList<AnnotatedOption>();
+		options.add(new AnnotatedOption(new Option("opt", "desc"), "dateIsNotSupported"));
+		annotationVerifier.verifyOptionTypeIsSupported(options, AnnotatedTypeNotSupported.class);
 	}
 }

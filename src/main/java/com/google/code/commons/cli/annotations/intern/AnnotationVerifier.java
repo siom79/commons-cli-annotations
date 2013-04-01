@@ -14,26 +14,46 @@ public class AnnotationVerifier {
 
 	public void verify(List<AnnotatedOption> options, Class<?> clazz) throws ParserException {
 		verifyAllAnnotatedPropertiesWriteable(options, clazz);
-		verifyNoArgsOptionsAreBoolean(options, clazz);
+		verifyOptionTypeIsSupported(options, clazz);
 	}
 
-	void verifyNoArgsOptionsAreBoolean(List<AnnotatedOption> options, Class<?> clazz) throws ParserException {
+	void verifyOptionTypeIsSupported(List<AnnotatedOption> options, Class<?> clazz) throws ParserException {
 		for (AnnotatedOption annotatedOption : options) {
 			Option option = annotatedOption.getOption();
 			if (option.getArgs() <= 0 && !option.hasOptionalArg()) {
-				String fieldName = annotatedOption.getFieldName();
-				try {
-					PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, clazz);
-					Class<?> propertyType = propertyDescriptor.getPropertyType();
-					if (!Boolean.class.equals(propertyType) && !boolean.class.equals(propertyType)) {
-						throw new ParserException(Reason.AnnotatedPropertyNotBoolean, String.format(
-								"The annotated property '%s' for class '%s' is not boolean.", fieldName,
-								clazz.getName()));
-					}
-				} catch (IntrospectionException e) {
-					throwReflectionException(clazz, fieldName, e);
-				}
+				verifyOptionTypeIsBoolean(clazz, annotatedOption);
+			} else {
+				verifyOptionTypeIsSupported(clazz, annotatedOption);
 			}
+		}
+	}
+
+	private void verifyOptionTypeIsSupported(Class<?> clazz, AnnotatedOption annotatedOption) throws ParserException {
+		String fieldName = annotatedOption.getFieldName();
+		try {
+			PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, clazz);
+			Class<?> propertyType = propertyDescriptor.getPropertyType();
+			if (!String.class.equals(propertyType)) {
+				throw new ParserException(Reason.AnnotatedPropertyTypeNotSupported, String.format(
+						"The type '%s' of annotated property '%s' for class '%s' is not supported.",
+						propertyType.getName(), fieldName, clazz.getName()));
+			}
+		} catch (IntrospectionException e) {
+			throwReflectionException(clazz, fieldName, e);
+		}
+	}
+
+	private void verifyOptionTypeIsBoolean(Class<?> clazz, AnnotatedOption annotatedOption) throws ParserException {
+		String fieldName = annotatedOption.getFieldName();
+		try {
+			PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, clazz);
+			Class<?> propertyType = propertyDescriptor.getPropertyType();
+			if (!Boolean.class.equals(propertyType) && !boolean.class.equals(propertyType)) {
+				throw new ParserException(Reason.AnnotatedPropertyNotBoolean, String.format(
+						"The annotated property '%s' for class '%s' is not boolean.", fieldName, clazz.getName()));
+			}
+		} catch (IntrospectionException e) {
+			throwReflectionException(clazz, fieldName, e);
 		}
 	}
 

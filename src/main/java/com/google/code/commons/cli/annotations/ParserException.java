@@ -1,9 +1,10 @@
 package com.google.code.commons.cli.annotations;
 
 public class ParserException extends Exception {
+	private static final long serialVersionUID = 1L;
 
 	public enum Reason {
-		Instantiation, CommonsCliParseException, SettingValueFailed, ReflectionException, AnnotatedPropertyNotWriteable, AnnotatedPropertyNotBoolean
+		Instantiation, CommonsCliParseException, SettingValueFailed, ReflectionException, AnnotatedPropertyNotWriteable, AnnotatedPropertyNotBoolean, AnnotatedPropertyTypeNotSupported
 	};
 
 	private Reason reason;
