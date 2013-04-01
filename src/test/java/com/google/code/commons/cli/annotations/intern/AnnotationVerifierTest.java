@@ -1,5 +1,8 @@
 package com.google.code.commons.cli.annotations.intern;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,6 +11,7 @@ import org.apache.commons.cli.Option;
 import org.junit.Test;
 
 import com.google.code.commons.cli.annotations.ParserException;
+import com.google.code.commons.cli.annotations.ParserException.Reason;
 
 public class AnnotationVerifierTest {
 
@@ -90,11 +94,17 @@ public class AnnotationVerifierTest {
 		}
 	}
 
-	@Test(expected = ParserException.class)
-	public void annotatedPropertyIsNotSupported() throws ParserException {
+	public void annotatedPropertyIsNotSupported() {
 		AnnotationVerifier annotationVerifier = new AnnotationVerifier();
 		List<AnnotatedOption> options = new LinkedList<AnnotatedOption>();
 		options.add(new AnnotatedOption(new Option("opt", "desc"), "dateIsNotSupported"));
-		annotationVerifier.verifyOptionTypeIsSupported(options, AnnotatedTypeNotSupported.class);
+		boolean exeptionThrown = false;
+		try {
+			annotationVerifier.verifyOptionTypeIsSupported(options, AnnotatedTypeNotSupported.class);
+		} catch (ParserException e) {
+			exeptionThrown = true;
+			assertThat(e.getReason(), is(Reason.AnnotatedPropertyTypeNotSupported));
+		}
+		assertThat(exeptionThrown, is(true));
 	}
 }
