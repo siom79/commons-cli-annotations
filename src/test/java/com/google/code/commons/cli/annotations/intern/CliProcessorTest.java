@@ -13,7 +13,7 @@ import org.junit.Test;
 import com.google.code.commons.cli.annotations.CliOption;
 import com.google.code.commons.cli.annotations.ParserException;
 
-public class CliParserTest {
+public class CliProcessorTest {
 
 	public static class VerboseOption {
 

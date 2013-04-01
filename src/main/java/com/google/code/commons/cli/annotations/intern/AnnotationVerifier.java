@@ -33,10 +33,16 @@ public class AnnotationVerifier {
 		try {
 			PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, clazz);
 			Class<?> propertyType = propertyDescriptor.getPropertyType();
-			if (!String.class.equals(propertyType)) {
-				throw new ParserException(Reason.AnnotatedPropertyTypeNotSupported, String.format(
-						"The type '%s' of annotated property '%s' for class '%s' is not supported.",
-						propertyType.getName(), fieldName, clazz.getName()));
+			if (!(String.class.equals(propertyType) || int.class.equals(propertyType)
+					|| Integer.class.equals(propertyType) || long.class.equals(propertyType)
+					|| Long.class.equals(propertyType) || float.class.equals(propertyType)
+					|| Float.class.equals(propertyType) || double.class.equals(propertyType) || Double.class
+						.equals(propertyType))) {
+				throw new ParserException(
+						Reason.AnnotatedPropertyTypeNotSupported,
+						String.format(
+								"The type '%s' of annotated property '%s' for class '%s' is not supported. Supported argument types are: String, int, Integer, long, Long, float, Float, double, Double.",
+								propertyType.getName(), fieldName, clazz.getName()));
 			}
 		} catch (IntrospectionException e) {
 			throwReflectionException(clazz, fieldName, e);

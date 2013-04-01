@@ -4,7 +4,7 @@ public class ParserException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public enum Reason {
-		Instantiation, CommonsCliParseException, SettingValueFailed, ReflectionException, AnnotatedPropertyNotWriteable, AnnotatedPropertyNotBoolean, AnnotatedPropertyTypeNotSupported
+		Instantiation, CommonsCliParseException, SettingValueFailed, ReflectionException, AnnotatedPropertyNotWriteable, AnnotatedPropertyNotBoolean, AnnotatedPropertyTypeNotSupported, ConvertingValueFailed
 	};
 
 	private Reason reason;

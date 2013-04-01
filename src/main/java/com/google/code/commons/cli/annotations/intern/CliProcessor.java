@@ -30,10 +30,12 @@ public class CliProcessor {
 				String opt = option.getOpt();
 				if (line.hasOption(opt)) {
 					if (option.hasArg() || option.hasOptionalArg()) {
+						Class<?> type = annotatedOption.getField().getType();
 						String optionValue = line.getOptionValue(opt);
+						Object convertedObject = convertStringToObject(opt, optionValue, type);
 						try {
 							PropertyUtils.setSimpleProperty(instanceOfT, annotatedOption.getField().getName(),
-									optionValue);
+									convertedObject);
 						} catch (Exception e) {
 							throw new ParserException(Reason.SettingValueFailed, String.format(
 									"Setting value %s to property %s of class %s failed: %s.", optionValue,
@@ -55,6 +57,43 @@ public class CliProcessor {
 			throw new ParserException(Reason.CommonsCliParseException, e.getMessage(), e);
 		}
 		return instanceOfT;
+	}
+
+	private Object convertStringToObject(String opt, String optionValue, Class<?> type) throws ParserException {
+		if (String.class.equals(type)) {
+			return optionValue;
+		} else if (int.class.equals(type) || Integer.class.equals(type)) {
+			try {
+				return Integer.parseInt(optionValue);
+			} catch (NumberFormatException e) {
+				throw new ParserException(Reason.ConvertingValueFailed, String.format(
+						"Converting value for option '%s' to an integer value failed: %s.", opt, e.getMessage()), e);
+			}
+		} else if (long.class.equals(type) || Long.class.equals(type)) {
+			try {
+				return Long.parseLong(optionValue);
+			} catch (NumberFormatException e) {
+				throw new ParserException(Reason.ConvertingValueFailed, String.format(
+						"Converting value for option '%s' to a long value failed: %s.", opt, e.getMessage()), e);
+			}
+		} else if (float.class.equals(type) || Float.class.equals(type)) {
+			try {
+				return Float.parseFloat(optionValue);
+			} catch (NumberFormatException e) {
+				throw new ParserException(Reason.ConvertingValueFailed, String.format(
+						"Converting value for option '%s' to a floating value failed: %s.", opt, e.getMessage()), e);
+			}
+		} else if (double.class.equals(type) || Double.class.equals(type)) {
+			try {
+				return Double.parseDouble(optionValue);
+			} catch (NumberFormatException e) {
+				throw new ParserException(Reason.ConvertingValueFailed,
+						String.format("Converting value for option '%s' to a double precision value failed: %s.", opt,
+								e.getMessage()), e);
+			}
+		} else {
+			throw new IllegalStateException(String.format("Unsupported type '%s' of field.", type.getName()));
+		}
 	}
 
 	private Options createOptionsFromAnnotatedOptions(List<AnnotatedOption> annotatedOptions) {
