@@ -81,6 +81,10 @@ The library has the following dependencies:
 * commons-beanutils:commons-beanutils:jar:1.8.3
 * commons-logging:commons-logging:jar:1.1.1
 
+##Development##
+
+[![Build Status](https://travis-ci.org/siom79/commons-cli-annotations.svg?branch=master)](https://travis-ci.org/siom79/commons-cli-annotations)
+
 ##Download##
 
 The latest version can be downloaded from the [release page](https://github.com/siom79/commons-cli-annotations/releases).
