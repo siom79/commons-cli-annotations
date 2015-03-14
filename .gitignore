@@ -1,4 +1,7 @@
-target
+target/
 .classpath
 .settings
 .project
+.idea/
+*.iml
+*.log*
