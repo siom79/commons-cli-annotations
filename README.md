@@ -80,3 +80,7 @@ The library has the following dependencies:
 * commons-cli:commons-cli:jar:1.2
 * commons-beanutils:commons-beanutils:jar:1.8.3
 * commons-logging:commons-logging:jar:1.1.1
+
+##Download##
+
+The latest version can be downloaded from the [release page](https://github.com/siom79/commons-cli-annotations/releases).
